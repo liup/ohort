@@ -1,0 +1,40 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block extra_head %} <link rel="stylesheet" href="{{ STATIC_URL }}css/account_settings.css" />{% endblock %}
+
+{% block rtab_id %}id="account_tab"{% endblock %}
+
+{% block head_title %}{% trans "Settings" %}{% endblock %}
+
+{% block body %}
+{% block menu %}
+<ul class="tabNavigation">
+		<li><a class="{% url profile_detail user as tab_url %}{% ifequal request.path tab_url %}selected{% endifequal %}" href="{% url profile_detail user %}">{% trans "Profile" %}</a></li>
+		<li><a class="{% url acct_email as tab_url %}{% ifequal request.path tab_url %}selected{% endifequal %}" href="{% url acct_email %}">{% trans "Email" %}</a></li>
+		{% if user.password %}
+		<li><a class="{% url acct_passwd as tab_url %}{% ifequal request.path tab_url %}selected{% endifequal %}" href="{% url acct_passwd %}">{% trans "Change Password" %}</a></li>
+	{% else %}
+		<li><a class="{% url acct_passwd_set as tab_url %}{% ifequal request.path tab_url %}selected{% endifequal %}" href="{% url acct_passwd_set %}">{% trans "Set Password" %}</a></li>
+	{% endif %}
+
+	{% if user.password and request.openids %}
+		<li><a class="{% url acct_passwd_delete as tab_url %}{% ifequal request.path tab_url %}selected{% endifequal %}" href="{% url acct_passwd_delete %}">{% trans "Delete Password" %}</a></li>
+	{% endif %}	
+	
+		{% comment %}
+		<li><a href="{% url acct_language_change %}">{% trans "Language" %}</a></li>
+				{% endcomment %}
+				
+	<li><a class="{% url acct_timezone_change as tab_url %}{% ifequal request.path tab_url %}selected{% endifequal %}" href="{% url acct_timezone_change %}">{% trans "Timezone" %}</a></li>
+	<li><a class="{% url avatar_change as tab_url %}{% ifequal request.path tab_url %}selected{% endifequal %}" href="{% url avatar_change %}">{% trans "Avatar" %}</a></li>
+	
+	
+	</ul>
+{% endblock %}
+<div id="setting_content">
+{% block content %}{% endblock %}
+</div>
+{% endblock %}
+

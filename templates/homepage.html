@@ -1,0 +1,38 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Welcome" %}{% endblock %}
+
+{% block tab_id %}id="home_tab"{% endblock %}       
+
+
+{% block body %}
+    <h1>{% trans "Welcome to Cohorti!~" %}</h1>
+    
+    <p>
+        {% blocktrans %}
+        <b>Corhorit</b> is the world's largetst social network of real life cohorts. Our goal is to release the huge hidden power of these nature cohorts.
+        For more information about Cohorti, please click
+        {% endblocktrans %}
+        {% url about as about_url %}
+        <a href={{ about_url }}>here</a>
+    </p>
+    
+    <hr />
+    {% if user.is_authenticated %}
+        {% url what_next as what_next_url %}
+        <p>{% blocktrans %}Wondering <a href="{{ what_next_url }}">What Next</a>?{% endblocktrans %}</p>
+    {% else %}
+        {% url acct_login as login_url %}
+        {% ifsetting ACCOUNT_OPEN_SIGNUP %}
+            {% url acct_signup as signup_url %}
+            <p>{% blocktrans %}You can <a href="{{ signup_url }}">Sign up</a> and <a href="{{ login_url }}">Log in</a> to try out the site.{% endblocktrans %}</p>
+        {% else %}
+            <p>{% blocktrans %}You can <a href="{{ login_url }}">Log in</a> to try out the site.{% endblocktrans %}</p>
+        {% endifsetting %}
+    {% endif %}
+    
+{% endblock %}
+

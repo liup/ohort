@@ -1,0 +1,70 @@
+{% extends "forums/base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+{% load pagination_tags %}
+
+{% block head_title %}{% spaceless %}
+{% if group %}
+    {% blocktrans with group.name as group_name %}Discussion Forums for {{ group_name }}{% endblocktrans %}
+{% else %}
+    {% trans "Discussion Forums" %}
+{% endif %}
+{% endspaceless %}{% endblock %}
+
+{% block body %}
+    <h1>{% spaceless %}
+    {% if group %}
+        {% blocktrans with group.get_absolute_url as group_url and group.name as group_name %}Groups for <a href="{{ group_url }}">{{ group_name }}</a>{% endblocktrans %}
+    {% else %}
+        {% trans "Groups" %}
+    {% endif %}
+    {% endspaceless %}</h1>
+    
+    <form method="GET" action="">
+        <input type="text" name="search" value="{{ search_terms }}" />
+        <input type="submit" value="Search" />
+    </form>
+
+    <!-- create new group form -->
+    {% if is_member %}
+        <script type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery-ui-1.8.6.custom.min.js"></script>
+        <div id="new-forum">
+            <a id="new-forum-btn" href="#">{% trans "Create a New Group" %}</a>
+            <div id="new-forum-form" style="display: none;">
+                <form class="uniForm" method="POST" action="">
+                    <fieldset class="inlineLabels">
+                        {{ forum_form|as_uni_form }}
+                        <div class="form_block">
+                            <input type="hidden" name="next" value="{{ request.path }}" />
+                            <input type="submit" value="{% trans "Create New Group" %}" /></td>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <script type="text/javascript">
+                $(function() { 
+                    $("#new-forum-btn").toggle(
+                        function() {
+                            $("#new-forum-form").show();
+                        }, 
+                        function() {
+                            $("#new-forum-form").hide();
+                        }
+                    );
+                });
+            </script>
+    {% endif %}
+    <!-- end of create new forum form -->
+
+    {% autopaginate forums %}
+    
+    {% for forum in forums %}
+        {% include "forums/forum_item.html" %}
+    {% endfor %}
+    
+    {% paginate %}
+    
+    
+{% endblock %}

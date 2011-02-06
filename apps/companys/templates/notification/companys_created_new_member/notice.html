@@ -1,0 +1,2 @@
+{% load i18n %}{% url profile_detail username=user.username as user_url %}
+{% blocktrans with company.get_absolute_url as company_url %}<a href="{{ user_url }}">{{ user }}</a> has joined the company <a href="{{ company_url }}">{{ company }}</a>.{% endblocktrans %}

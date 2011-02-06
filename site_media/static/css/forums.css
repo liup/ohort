@@ -1,0 +1,176 @@
+/**
+ * forums css
+ * $HeadURL: http://localhost/svn/cohorti/trunk/cohorti/site_media/static/css/forums.css $
+ *      $Id: forums.css 117 2010-12-05 02:44:09Z david $
+ */
+
+.forum {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.forum .entry-left {
+  float: left;
+}
+
+.forum .entry-left .title {
+}
+
+.forum .entry-left .title a {
+  color: #3b5998;
+  text-decoration: none;
+}
+
+.forum .entry-image {
+  float: left;
+  width: 160px;
+}
+
+.forum .entry-text {
+  padding-left: 160px;
+}
+
+.forum .entry-text .title {
+}
+
+.forum .entry-text .title a {
+  height: 30px;
+  color: #333;
+  font-size: 150%;
+  color: #3b5998;
+  text-decoration: none;
+}
+
+.forum .entry-text .title a:hover {
+  color: #dd3c10;
+}
+
+.forum .entry-text .meta {
+  margin-left: 2px;
+  padding: 2px 30px 2px 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  font-size: 80%;
+  color: #66665E;
+}
+
+.forum .entry-text .meta span {
+  display: block;
+  margin-top: -10px;
+}
+
+.forum .entry-text .meta a {
+}
+
+.forum .entry-text .entry {
+}
+
+.forum .userpic {
+  float: right;
+}
+
+.forum .entry-text .entry-content {
+  float: right;
+  width: 330px;
+}
+
+.forum .entry-text .links a {
+  font-weight: bold;
+  color: #08252E;
+}
+
+.forum .entry-text .links .comments {
+}
+
+.forum .entry-text .links .permalink {
+  padding-left: 17px;
+}
+
+
+
+
+.forumview {
+}
+
+.forumview .title {
+  height: 30px;
+  color: #333;
+  font-size: 150%;
+  padding-left: 10px;
+  padding-top: 5px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  background-color: #eceff6;
+  border: 1px solid #d4dae8;
+  color: #333333;
+}
+
+.forumview .attributetitle {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #666;
+}
+
+.forumview .attribute {
+  margin-left: 30px;
+}
+
+blockquote {
+  background:transparent url(http://www.facebook.com/images/start_quote_small.gif) no-repeat scroll -1px 0;
+  line-height:14px;
+  margin:14px 0;
+  padding:0 0 0 16px;
+}
+
+blockquote span {
+  background:transparent url(http://www.facebook.com/images/end_quote_small.gif) no-repeat scroll right bottom;
+  padding:0 15px 0 0;
+}
+
+.topic-list {
+  border: 0 none;
+}
+.topic-list .entry-image {
+  width: 60px;
+}
+.topic-list .entry-text {
+  color: #808080;
+  padding-left: 60px;
+}
+.topic-list .entry-text .hd {
+  padding-bottom: 10px;
+}
+.topic-list .entry-text .hd .topic-creator A {
+  text-decoration: none;
+}
+.topic-list .entry-text .body {
+  padding-bottom: 20px;
+}
+.topic-list .entry-text .ft {
+  background-color: #EDEFF4;
+  font-size: 11px;
+  overflow: hidden;
+  padding: 5px 20px;
+}
+.topic-list .entry-text .ft .created, 
+.topic-list .entry-text .ft .comment_stats, 
+.topic-list .entry-text .ft .tags {
+  float: left;
+  display: inline;
+  overflow: hidden;
+  *zoom: 1;
+  margin-right: 20px;
+}
+.topic-list .entry-text .ft .tags IMG, 
+.topic-list .entry-text .ft .tags A {
+  float: left;
+  display: inline;
+  overflow: hidden;
+  margin-right: 5px;
+}
+
+#new-topic {
+  margin: 20px 0;
+  clear: both;
+}

@@ -1,0 +1,38 @@
+
+
+UL.tabNavigation {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	margin-bottom: 3px;
+}
+
+UL.tabNavigation LI {
+	display: inline;
+}
+
+UL.tabNavigation LI A {
+	padding: 3px 20px;
+	background-color: #ccc;/*#F7F7F7;*/
+	color: #000;
+	text-decoration: none;
+}
+
+
+UL.tabNavigation LI A.selected,
+UL.tabNavigation LI A:hover {
+	background-color: #333 ;
+	color: #fff;
+	/*padding-top: 7px;*/
+}
+
+UL.tabNavigation LI A:focus {
+		outline: 0;
+}
+
+#setting_content{
+	border: 1px solid grey;
+	padding: 15px;
+}
+				
+				

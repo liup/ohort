@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load openid_tags %}
+{% load ifsetting_tag %}
+{% load group_tags %}
+{% load analytics %}
+{% load sorting_tags %}
+{% load pagination_tags %}
+{% block extra_head_base %}
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/site_base.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/site_tabs.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}bookmarks/css/bookmarks.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/forums.css" />
+		
+    <!-- pinax related css -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/avatar.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/blogs.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/comments.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/friends.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/groups.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/locations.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/messages.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/microblogging.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/pagination.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/photos.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/tabs.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/wiki.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/jquery.autocomplete.css" />
+    
+    <link rel="stylesheet" href="{{ STATIC_URL }}jquery/css/custom-theme-blue/jquery-ui-1.8.6.custom.css" />  
+    
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery-ui-1.8.6.custom.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}uni_form/uni-form.jquery.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}pinax/js/base.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}pinax/js/topics.js"></script>
+   
+    {% block extra_head %}{% endblock %}
+{% endblock %}
+
+{% comment %}
+{% block login %}
+    {% if user.is_authenticated %}
+        {% if not user.is_staff %}
+			{% openid_icon openid user %}<b>Hi, {{ user.first_name|capfirst }}</b>		
+		{% endif %}
+		&nbsp;<a href="{% url acct_logout %}" style="link_no_underline">{% trans "Logout" %}</a>
+	{% endif %}
+{% endblock %}
+{% endcomment %}
+
+{% block logo_link_image %}<a href="{% url home %}"><img src="{{ STATIC_URL }}logo_white.png" alt="Pinax"/></a>{% endblock %}
+
+{% block center_menu %}<a href="{% url company_list %}" class="link_no_underline"><span style="font-size:110%"><span class="topBig">{% trans "Browse" %}</span><span class="topSmall">{% trans "All Cohorts" %}</span></span></a>{% endblock %}
+{% block top_search %}
+<form method="GET" action="{% url company_list %}">
+    <input type="text" name="search" value="{{ search_terms }}" />
+    <input type="submit" value="Search" />
+</form>
+{% endblock %}
+
+{% block right_tabs %}
+	{% include "site_base_top_menu.html" %}
+{% endblock %}
+
+{% block body_outer %}
+	<div id="body" class="widthfix">
+    {% block leftnav %}   
+       {% include "site_base_left_menu.html" %}   
+    {% endblock %}    
+    {% if user.is_authenticated %}
+        <div id="main-c" class="partialmain">
+    {% else %}
+        <div id="main-c" class="fullmain">
+    {% endif %}
+			<div id="main">
+				{% if messages %}
+					<ul id="messages">
+						{% for message in messages %}
+							<li id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small>{% trans "clear" %}</small></a> {{ message }}</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+
+				{% block body %}
+				{% endblock %}
+			</div>
+			
+		</div>
+	{% block right_column %}
+				{% include "site_base_right_column.html" %}
+	{% endblock %}
+		<div class="clearboth"></div>
+	</div>
+{% endblock %}
+
+{% block footer %}
+<div class="legal">
+    {% trans "&copy; 2010 Cohorti Inc." %}
+    <span style="float:right" >
+	<a href="{% url about %}" class="link_no_underline" >{% trans "About" %}</a>
+    - <a href="{% url terms %}" class="link_no_underline">{% trans "Terms of Service" %}</a>
+    - <a href="{% url privacy %}" class="link_no_underline">{% trans "Privacy Policy" %}</a>
+    - <a href="{% url dmca %}" class="link_no_underline">{% trans "DMCA Notice" %}</a>
+	- <a href="{% url help %}" class="link_no_underline">{% trans "Help" %}</a>
+	</span>
+</div>
+{% endblock %}
+

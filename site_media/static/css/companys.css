@@ -1,0 +1,34 @@
+.companylogo {
+	width: 250px;
+}
+
+.company_list_logo{
+	width:35px;
+	height:35px;
+}
+
+table.company_list
+{
+	width: 600px;
+	padding: 0px;
+	margin: 0px;
+	clear:both;
+	position:relative;
+	
+}
+
+table.company_list tr
+{
+	height: 37px;
+	line-height:37px;
+}
+
+table.company_list td.name_field{
+	width: 125px;	
+	text-align:center;
+	font-weight:bold;
+}
+
+table.company_list td.logo_field{
+	width: 40px;	
+}

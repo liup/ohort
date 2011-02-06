@@ -1,0 +1,24 @@
+{% extends "companys/base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+{% load wiki_tags %}
+{% load avatar_tags %}
+{% load threadedcommentstags %}
+{% load pagination_tags %}
+{% load extra_tagging_tags %}
+{% load companys_tags %}
+{% load group_tags %}
+{% load forums_tags %}
+{% load topics_tags %}
+{% load photo_tags %}
+{% load theme_tags %}
+
+{% block head_title %}{% trans "Members" %} in {{ company.name|capfirst }}{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        {% include "companys/company_member_list.html" %}
+	{% endif %}	
+    
+{% endblock %}

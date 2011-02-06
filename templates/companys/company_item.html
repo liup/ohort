@@ -1,0 +1,42 @@
+{% load i18n %}
+{% load extra_tagging_tags %}
+{% load forums_tags %}
+{% load group_tags %}
+
+<tr>
+	<td class="logo_field"><a href="{{ company.get_absolute_url }}"><img src="{{ company.logo }}" class="company_list_logo"/></a>
+	</td>
+
+	<td class="name_field"><a href="{{ company.get_absolute_url }}">{{company.name|capfirst|truncate_string:16}} </a>
+	</td>
+
+	<td>
+		<span>{% trans "Members:" %} <b><a href="{% url company_members company.slug %}">{{ company.members.all|length }}</a></b></span>
+		<span>
+			{% get_forums_for_group company as forums %}
+			{% trans "Groups:" %} <b><a href="{% groupurl forum_list company %}">{{forums.all|length}}</a></b>
+			
+			{% show_tags_for company %} {# @@@ #}
+		</span>
+		<td>
+		{% if request.user.is_authenticated %}
+		<span>
+			<form method="POST" action="{% url company_detail company.slug %}">
+				{% if is_member %}
+					<input type="hidden" name="action" value="leave" />
+					{% ifequal request.user company.creator %}
+						<input type="submit" value="{% trans "Leave" %}" disabled="disabled"/>{% trans " Creator can't leave its company." %}</p>
+					{% else %}
+						<input type="submit" value="{% trans "Leave" %}"/>
+					{% endifequal %}
+				{% else %}
+					<input type="hidden" name="action" value="join" />
+					<input type="submit" value="{% trans "Join" %}"/>
+				{% endif %}
+			</form>
+		</span>
+		{% endif %}
+		</td>
+	</td>
+</tr> 
+

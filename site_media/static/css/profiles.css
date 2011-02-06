@@ -1,0 +1,4 @@
+.profile #subnav, 
+.profile #subnav .clearfix {
+	min-height: 0;
+}

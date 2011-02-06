@@ -1,0 +1,65 @@
+{% extends "forums/base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+{% load extra_tagging_tags %}
+{% load pagination_tags %}
+{% load comments_tag %}
+{% load avatar_tags %}
+{% load group_tags %}
+
+{% block head_title %}{% trans "Topic" %} : {{ topic.title }}{% endblock %}
+
+{% block body %}
+    <p>
+        <a href="{% groupurl forum_list group %}">&larr; {% trans "Back to Group List" %}</a>
+        <a href="{% groupurl topic_list group %}">{% trans "Create New Topic" %}</a>
+    </p>
+    
+    <ul class="responses">
+        <li class="odd thread-0 clearfix">
+            <div class="bulk">
+                <h1>{{ topic.title }}</h1>
+                <div class="body">{{ topic.body|urlize|linebreaks }}</div>
+                <p>{% show_tags_for topic %}</p>
+                {% ifequal user topic.creator %}
+                <form class="uniForm" method="POST" action="{{ request.path }}delete/">
+                    <fieldset class="inlineLabels">
+                        <div class="form_block">
+                            <input type="submit" value="{% trans "Delete Topic" %}" />
+                            <input type="hidden" name="next" value="{% groupurl topic_list group %}" />
+                        </div>
+                    </fieldset>
+                </form>
+
+                {% if not edit %}<p><a href="{{ request.path }}edit/">Edit Topic</a></p>{% endif %}
+                {% endifequal %}
+                {% if can_observe %}
+                    {% if is_observing %}
+                        <form action="{% groupurl topics_stop_observing group topic_id=topic.id %}" method="post">
+                            <input type="submit" value="{% trans "Stop Observing Topic" %}">
+                        </form>
+                    {% else %}
+                        <form action="{% groupurl topics_observe group topic_id=topic.id %}" method="post">
+                            <input type="submit" value="{% trans "Observe Topic" %}">
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </li>
+    </ul>
+
+    {% if edit %}
+        <h2>Edit</h2>
+        <form class="uniForm" method="post" action="{{ request.path }}">
+            <fieldset class="inlineLabels">
+                <div class="form_block">
+                    <textarea id="id_body" name="body">{{ topic.body }}</textarea>
+                    <input type="submit" name="edit" value="Edit!" />
+                </div>
+            </fieldset>
+        </form>
+    {% else %}
+        {% comments topic %}
+    {% endif %}
+{% endblock %}

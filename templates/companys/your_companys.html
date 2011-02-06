@@ -1,0 +1,31 @@
+{% extends "companys/base.html" %}
+
+{% load i18n %}
+{% load pagination_tags %}
+{% load companys_tags %}
+
+{% block head_title %}{% trans "Your Companies" %}{% endblock %}
+
+{% block body %}
+    
+    <h1>{% trans "Your Companies" %}</h1>
+	{% if companys %}
+		<p>{% trans "These are the companys you participate in." %}</p>
+		
+		<table class="company_list">
+		
+			{% autopaginate companys 15 %}
+			{% for company in companys %}
+				{% show_company company %}
+			{% endfor %}
+			{% paginate %}
+		</table>
+	
+		
+	{% else %}
+	{% trans "You are currently not participating in any company. Please find your company in " %}<a href="{% url company_list %}">{% trans "our company listing" %}</a>{% trans " and join one. If you can't find your company, you can also create one, but you need to be an admin user. " %}
+
+	{% endif %}
+   
+       
+{% endblock %}

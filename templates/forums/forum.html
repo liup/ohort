@@ -1,0 +1,87 @@
+{% extends "forums/base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+{% load extra_tagging_tags %}
+{% load pagination_tags %}
+{% load comments_tag %}
+{% load avatar_tags %}
+{% load group_tags %}
+
+{% block head_title %}{% trans "Group" %} : {{ forum.title }}{% endblock %}
+
+{% block body %}
+    <a href="{% groupurl forum_list group %}">&larr; {% trans "Back to Group List" %}</a>
+
+    {% if can_observe %}
+        {% if is_observing %}
+            <form action="{% groupurl forums_stop_observing group forum_id=forum.id %}" method="post">
+                <input type="submit" value="{% trans "Stop Observing Group" %}">
+            </form>
+        {% else %}
+            <form action="{% groupurl forums_observe group forum_id=forum.id %}" method="post">
+                <input type="submit" value="{% trans "Observe Group" %}">
+            </form>
+        {% endif %}
+    {% endif %}
+
+    <!-- list of topics -->
+    <h1>{% spaceless %}
+    {% if group %}
+        {% blocktrans with group.get_absolute_url as group_url and group.name as group_name and forum.title as forum_title %}Topics in {{ forum_title }} for <a href="{{ group_url }}">{{ group_name }}</a>{% endblocktrans %}
+    {% else %}
+        {% trans "Topics" %}
+    {% endif %}
+    {% endspaceless %}</h1>
+    
+    <form method="GET" action="">
+        <input type="text" name="search" value="{{ search_terms }}" />
+        <input type="submit" value="Search" />
+    </form>
+
+    <!-- create new topic form -->
+    {% if is_member %}
+				<div id="new-topic">
+					<a id="new-topic-btn" href="#">{% trans "New Topic" %}</a>
+
+					<div id="new-topic-form" style="display: none;">
+		        <form class="uniForm" method="POST" action="">
+		            <fieldset class="inlineLabels">
+		                {{ topic_form|as_uni_form }}
+		                <div class="form_block">
+		                    <input type="hidden" id="id_forum" name="forum" value="{{ forum }}" />
+		                    <input type="hidden" name="next" value="{{ request.path }}" />
+		                    <input type="submit" value="{% trans "Create New Topic" %}" /></td>
+		                </div>
+		            </fieldset>
+		        </form>
+					</div>
+				</div>
+
+				<script type="text/javascript">
+					$(function() { 
+
+						$("#new-topic-btn").toggle(
+							function() {
+								$("#new-topic-form").show();
+							}, 
+							function() {
+								$("#new-topic-form").hide();
+							}
+						);
+					});
+				</script>
+    {% endif %}
+    <!-- end of create new topic form -->
+		
+
+    {% autopaginate topics %}
+    
+    {% for topic in topics %}
+        {% include "forums/topic_item.html" %}
+    {% endfor %}
+    
+    {% paginate %}
+    <!-- end of list of topics -->    
+
+{% endblock %}

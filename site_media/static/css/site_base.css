@@ -1,0 +1,158 @@
+#leftnav-c {
+	float: left;
+	display: inline;
+	overflow: hidden;
+    width: 20%; 
+}
+
+#leftnav {
+	margin-right: 10px;
+	padding-top: 10px;
+}
+/*
+#leftnav a{
+    text-decoration:none;
+    color:inherit;
+}
+*/
+.link_no_underline, #leftnav a{
+    text-decoration:none;
+    color:inherit;
+	font-size:13px;
+}
+
+#main-c {
+	float: left;
+	display: inline;
+	overflow: hidden;
+}
+
+#main {
+	margin-left: 10px;
+	padding: 10px;
+	display:inline;
+	float: left;
+	
+}
+
+#rightcolumn{
+	width: 20%;
+	display:inline;
+	float: right;
+}
+
+#rightcolumn #ads{
+	padding:10px;
+	/*background-color: #DFE4EE;*/
+}
+
+#rightcolumn .header{
+	background-color:#F2F2F2;
+	border: 1px solid grey;
+	padding-left: 2px;
+	font-size: 12px;
+}
+
+#rightcolumn .content{
+	padding-left: 2px;
+}
+
+hr.lightgrey {
+    color:#ccc;
+    background-color:#ccc;
+    height:1px;
+    border:none;
+}
+
+.fullmain{
+  /*  width:100%;	*/
+}
+
+.partialmain{
+    width:60%;
+}
+
+.topBig{
+	display: block;
+	color: white;	
+	font-size:18px;
+}
+
+.topSmall{
+	display: block;
+	color: white;
+	font-size:14px;
+}
+
+.tab_content{
+	border: 1px solid #ccc !important;
+	position: absolute; 
+	background:#ffffff !important; 
+	/*left: 5px;*/
+	/*padding:5px !important;*/
+	z-index:1000;
+	white-space:nowrap;
+	padding: 0px !important;
+}
+
+#right_tabs{
+	border: 0px;
+	background:inherit;
+	padding: 0px;
+	/*bottom: -2px !important;*/
+}
+
+#right_tabs ul{
+	padding: 0px;
+	margin:0px;
+}
+
+.tab_content ul{
+	list-style:none outside none;
+	padding: 5px !important;
+} 
+
+.tab_content ul a{
+	padding: 5px;
+	font-size: 13px;
+}
+
+.tab_content ul li:hover{
+	background: #DFE4EE; 
+}
+
+#accordion h3{
+	background:#627AAD;
+	color:white;
+}
+
+#accordion h3 a{
+	padding-left: 1em;
+}
+
+#accordion .ui-accordion-content-active{
+	padding: 15px;
+	height:auto;
+}
+
+#accordion .ui-accordion-content-active a:hover{
+	background:#DFE4EE;
+}
+
+#leftnav_header{
+}
+
+#leftnav_header_greeting{
+    padding-top: 20px;
+    padding-left: 70px;
+    position: absolute;
+}
+
+#leftnav_header_avatar{
+    padding-top: 10px;
+}
+
+.photo
+{
+	width: 50px;
+}

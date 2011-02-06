@@ -1,0 +1,41 @@
+{% load i18n %}
+{% load avatar_tags %}
+{% load threadedcommentstags %}
+{% load extra_tagging_tags %}
+{% load group_tags %}
+
+<div class="forum topic-list clearfix">
+    <div class="entry-image">
+        <div class="avatar">{% avatar topic.creator 40 %}</div>
+    </div>
+    <div class="entry-text">
+    		<div class="hd">
+						<span class="topic-creator">
+								<a href="{{ topic.creator.get_profile.get_absolute_url }}">{{ topic.creator }}</a>: 
+						</span>
+						<span class="topic-title">{{ topic.title }}</span>
+				</div>
+
+        <div class="body">
+						{{ topic.body|urlize }} 
+						(<a href="{% groupurl topic_detail group topic_id=topic.id %}" class="more">{% trans "more" %}</a>)
+				</div>
+				
+				<div class="ft">
+					<div class="created">{{ topic.created|date }}</div>
+					
+	        {% get_comment_count for topic as comment_count %}
+	        {% if comment_count %}
+	            <div class="comment_stats">
+	                {{ comment_count }} comment{{ comment_count|pluralize }}
+	                {% blocktrans with topic.modified|date as topic_modified %}
+	                (latest: {{ topic_modified }})
+	                {% endblocktrans %}
+	            </div>
+	        {% endif %}
+	
+			    <div class="tags">{% show_tags_for topic %}</div>
+				</div>
+
+    </div>
+</div>

@@ -1,0 +1,29 @@
+{% load i18n %}
+{% load group_tags %}
+{% load ifsetting_tag %}
+
+<ul>
+	{% spaceless %}
+		{% if user.is_authenticated %}
+			<li id="tab_account"><a href="#empty_tab_content" onclick="window.location='{% url profile_detail user %}'">{% trans "Profile" %}</a></li>
+			<li id="tab_account"><a href="#account_tab_content">{% trans "Account" %}</a></li>
+			{% if user.is_staff %}<li id="tab_admin"><a href="#empty_tab_content" onclick="window.location='/admin/'">{% trans "Admin" %}</a></li>{% endif %}
+		{% else %}
+			<li id="tab_login"><a href="#empty_tab_content" onclick="window.location='{% url acct_login %}'">{% trans "Login" %}</a></li>
+			{% ifsetting ACCOUNT_OPEN_SIGNUP %}<li id="tab_signup"><a href="#empty_tab_content" onclick="window.location='{% url acct_signup %}'">{% trans "Sign Up" %}</a></li>{% endifsetting %}
+		{% endif %}	
+		
+	{% endspaceless %}
+</ul>
+<div id="empty_tab_content" class="tab_content" style="visibility:hidden;"></div>
+	
+<div id="account_tab_content" class="tab_content" style="left:72px;">
+	<ul>
+		<li><a href="{% url profile_detail user %}">{% trans "Account Settings" %}</a></li>
+	<li><a href="{% url notification_settings %}">{% trans "Feed Settings" %}{% if notice_unseen_count %} ({{ notice_unseen_count }}){% endif %}</a></li>
+	<li><a href="{% url acct_other_services %}">{% trans "Other Services" %}</a></li>
+	<li><a href="{% url acct_logout %}">{% trans "Logout" %}</a></li>
+	</ul>
+
+</div>	
+		

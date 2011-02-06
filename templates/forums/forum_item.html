@@ -1,0 +1,29 @@
+{% load i18n %}
+{% load avatar_tags %}
+{% load threadedcommentstags %}
+{% load extra_tagging_tags %}
+{% load group_tags %}
+
+<div class="forum">
+    <div class="entry-left">
+        <h1 class="title">
+            <a href="{% groupurl forum_detail group forum_id=forum.id %}">{{ forum.title }}</a>
+        </h1>
+    </div>
+    <div class="entry-text">
+        <p class="title">
+            {{ forum.body|urlize|linebreaks }}
+        </p>
+        {% get_comment_count for forum as comment_count %}
+        {% if comment_count %}
+            <div class="meta">
+                {{ comment_count }} comment{{ comment_count|pluralize }}
+                {% blocktrans with forum.modified|date as forum_modified %}
+                (most recent: {{ forum_modified }})
+                {% endblocktrans %}
+            </div>
+        {% endif %}
+        <p>{% show_tags_for forum %}</p>
+    </div>
+    <br/>
+</div>

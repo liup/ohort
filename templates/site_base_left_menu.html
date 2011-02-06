@@ -1,0 +1,156 @@
+{% load i18n %}
+{% load group_tags %}
+{% load sorting_tags %}
+{% load pagination_tags %}
+{% load forums_tags %}
+{% load avatar_tags %}
+
+{% if user.is_authenticated %}
+    <div id="leftnav-c">
+        <div id="leftnav_header">
+            <div id="leftnav_header_greeting">
+                {% if user.is_authenticated %}
+                    {% if not user.is_staff %}
+                        <b>Hi, {{ user.first_name|capfirst }}</b>		
+                    {% else %}
+                        <b>Hi, {{ user.username|capfirst }}</b>		
+                    {% endif %}
+                    <div>
+                        <a href="{% url profile_edit %}">Edit My Profile</a>
+                    </div>
+                {% endif %}
+            </div>
+            <div id="leftnav_header_avatar">
+                <a href="{% url profile_detail user %}"><img src="{% avatar_url user 80 %}" alt="Photo of {{ other_user }}" class="photo" /></a>
+            </div>
+        </div>
+        <div id="leftnav">
+		<div id="accordion">
+			<div>
+				<h3><a href="#" onclick ="location.href={% url notification_notices %}">{% trans "Feeds" %}</a></h3> 
+			</div>
+			<div>
+				<h3><a href="#" >{% trans "Companies" %}</a></h3>
+				<div>
+				<a href="{% url your_companys %}">{% trans "Your Companies " %}({{user.companys.all|length}})</a>
+				{% if user.companys.all %}
+					{% autosort user.companys.all %}
+					{% autopaginate user.companys.all %}									
+						<dl>
+						{% for company in user.companys.all %}
+							<p>-<a href="{{ company.get_absolute_url }}"> {{company|capfirst}}</a></p>
+						{% endfor %}
+						</dl>									
+				{% endif %}	
+				<hr class="lightgrey">
+				<a href="{% url company_list %}">{% trans "Browse All Companies" %}</a>
+				{% if user.is_staff %}
+				<hr class="lightgrey">
+				<a href="{% url company_create %}" class="link_no_underline">{% trans "Create a Company" %}</a>
+                    
+                {% endif %}							
+				</div>
+			</div>
+			<div>
+				<h3><a href="#">{% trans "Schools" %}</a></h3>
+				<div>
+				<a href="#">{% trans "Your Schools " %}({{schools|length}})</a>
+				{% if schools %}
+					{% autosort schools %}
+					{% autopaginate schools 5 %}									
+						<dl>
+						{% for school in schools %}
+							<p>- {{school}}</p>
+						{% endfor %}
+						</dl>									
+				{% endif %}	
+				<hr class="lightgrey">
+				<a href="#">{% trans "Browse All Schools" %}</a>
+				{% if user.is_staff %}
+				<hr class="lightgrey">
+				<a href="#" class="link_no_underline">{% trans "Create a School" %}</a>
+                    
+                {% endif %}							
+				</div>
+			</div>
+			<div>
+				<h3><a href="#">Messages</a></h3>
+				<div>
+					<dl><a href="{% url messages_inbox %}" >{% trans "Inbox" %}({{ combined_inbox_count }})</a></dl>
+					<dl><a href="{% url messages_compose %}" >{% trans "Compose" %}</a></dl>
+					<dl><a href="{% url messages_outbox %}" >{% trans "Send" %}</a></dl>
+					<dl><a href="{% url messages_trash %}" >{% trans "Trash" %}</a></dl>
+				
+				</div>
+			</div>
+			<div>
+				<h3><a href="#">Applications</a></h3>
+				<div>
+					{% trans "Groups" %}
+					<dl>
+						{% if user.companys.all %}
+							{% autosort user.companys.all %}
+							{% for company in user.companys.all %}
+			
+								{% get_forums_for_group company as forums %}
+                
+                {% comment %}
+								<p>-<a href="{% groupurl forum_list company %}">{{ company }}({{forums.all|length}})</a></p>
+                {% endcomment %}
+                
+                {% for forum in forums %}
+                  <p>-<a href="{% forum_link forum %}">{{ forum }}</a>
+                {% endfor %}
+							
+							{% endfor %}		
+						{% endif %}
+					</dl>
+				</div>
+			</div>
+		</div>
+		
+        </div>
+    </div>
+{% endif %}     
+     
+	
+
+<script type="text/javascript">
+  function getActiveLeftMenuItem(url) {
+    // currently: feeds, companies, schools, messages, applications
+    if (url.search(/messages/i) > -1)
+      return 3;
+    else if (url.search(/forums/i) > -1)
+      return 4;
+    else 
+      return 1;  //default to companies
+  }
+  
+  $(function(){
+    
+    // Accordion
+    $("#accordion").accordion({ header: "h3", active: getActiveLeftMenuItem(location.href) });  
+    $("#accordion .ui-icon").removeClass('ui-icon');
+    
+    // Tabs
+    $('#right_tabs').tabs();
+    $('#right_tabs > ul').removeClass('ui-widget-header'); 
+    $('#right_tabs > ul >li').removeClass('ui-tabs-selected ui-state-active');
+    $('#right_tabs a').addClass('link_no_underline');
+    
+    var tabContainers = $('#right_tabs > div');
+    tabContainers.hide();
+    $('#right_tabs').bind('mouseleave',function()
+        { tabContainers.hide();
+        $('#right_tabs > ul >li').removeClass('ui-tabs-selected ui-state-active ui-state-focus');  
+    });
+    
+    $('#right_tabs > ul a').click(function()
+      {  
+        tabContainers.hide();
+        tabContainers.filter(this.hash).show();
+      }
+    );
+});
+</script>
+

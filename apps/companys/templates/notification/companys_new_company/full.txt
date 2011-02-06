@@ -1,0 +1,4 @@
+{% load i18n %}{% blocktrans with company.get_absolute_url as company_url %}A new company {{ company }} has been created.
+
+http://{{ current_site }}{{ company_url }}
+{% endblocktrans %}

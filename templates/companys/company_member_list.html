@@ -1,0 +1,18 @@
+{% load i18n %}
+
+
+	<h2>{% trans "Members in " %}{{ company.name|capfirst }}</h2>
+	<table width="100%">
+		{% for member in company.members.all %}
+			{% if forloop.counter0|divisibleby:"3" %}<tr>{% endif %}
+			<td>
+				<div class="details"><a href="{% url profile_detail member.username %}" title="{{ member.username }}">{{ member.username }}</a></div>
+			</td>
+			{% if forloop.counter0|add:"1"|divisibleby:"3" %}</tr>{% endif %}
+		{% endfor %}
+		{% if company.members.all|length|divisibleby:"3" %}{% else %}</tr>{% endif %}
+	</table>
+
+       
+    
+   

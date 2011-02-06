@@ -1,0 +1,129 @@
+{% extends "companys/base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+{% load wiki_tags %}
+{% load avatar_tags %}
+{% load threadedcommentstags %}
+{% load pagination_tags %}
+{% load extra_tagging_tags %}
+{% load companys_tags %}
+{% load group_tags %}
+{% load forums_tags %}
+{% load topics_tags %}
+{% load photo_tags %}
+{% load theme_tags %}
+
+{% block head_title %}{{ company.name }}{% endblock %}
+
+{% block body %}
+    
+    {% if user.is_authenticated %}
+        <div class="right_panel">
+			<div class="members">
+				{% include "companys/company_member_list.html" %}
+		   </div>
+		</div>
+    {% endif %}
+    
+    <div style="width: 550px;">
+        
+        <h1>{% trans "Company" %} {{ company.name|capfirst }}</h1>
+        
+        <p>
+            {% if company.logo %} <img src="{{ company.logo }}" class="companylogo"/><br />{% endif %}
+            {% trans "Creator:" %} {{ company.creator }} <br/>
+            {% trans "Created:" %} {{ company.created|date }}<br />
+            {% trans "Website:" %} <a href="{{ company.website }}">{{ company.website }}</a><br />
+			{% trans "Members:" %} <a href="{% url company_members company.slug %}">{{ company.members.all|length }}</a><br />
+            {% show_tags_for company %}
+        </p>
+        
+        <p>{{ company.description }}</p>
+        
+        {% ifequal user company.creator %}
+            <div class="form-toggle">
+                <p><span id="edit-company-toggle">{% trans "Edit details" %}</span></p>
+                
+                <form class="uniForm" id="edit-company" method="POST" action="">
+                    <fieldset class="inlineLabels">
+                        {{ company_form|as_uni_form }}
+                        <div class="form_block">
+                            <input type="hidden" name="action" value="update" />
+                            <input type="submit" value="{% trans "updated" %}"/>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            
+            {% ifequal company.members.all.count 1 %}
+                <p>{% silk "delete" %} <a href="#" onclick="$('#delete_company_form').toggle(); return false;">{% trans "Delete company" %}</a><p>
+                 <form class="delete_form" id="delete_company_form" action="{% url company_delete company.slug %}" method="POST" style="display: none;">
+                     <input type="submit" value="{% trans "Delete Company" %}" /> (all content will be removed)
+                </form>
+            {% else %}
+                <p>{% trans "You are not the only member of the company so you can't delete the company." %}</p>
+            {% endifequal %}
+            
+        {% endifequal %}
+        
+        {% if user.is_authenticated %}
+            <div>
+                <form method="POST" action="">
+                    {% if is_member %}
+                        {% ifequal user company.creator %}
+                            <p>{% trans "You are the creator of this company so can't leave (yet)." %}</p>
+                        {% else %}
+                            <input type="hidden" name="action" value="leave" />
+                            <input type="submit" value="{% trans "leave" %}"/>
+                        {% endifequal %}
+                    {% else %}
+                        <input type="hidden" name="action" value="join" />
+                        <input type="submit" value="{% trans "join company" %}"/>
+                    {% endif %}
+                </form>
+            </div>
+        {% else %}
+            {% url acct_signup as signup_url %}
+            {% url acct_login as login_url %}
+            <p>{% blocktrans %}<a href="{{ signup_url }}">Sign up</a> and <a href="{{ login_url }}">log in </a> to join this company.{% endblocktrans %}</p>
+        {% endif %}
+        
+        
+        {% if user.is_authenticated %}
+            <h2>{% trans "Groups" %}{% if company.forums.all.count %} ({{ company.forums.all.count }}){% endif %}</h2>
+            
+            {% get_forums_for_group company as forum_queryset %}
+            {% with forum_queryset|slice:":5" as forums %}
+                {% if forums %}
+                    {% for forum in forums|slice:":5" %}
+                        {% show_forum forum %}
+                    {% endfor %}
+                    <p><a href="{% groupurl forum_list company %}">{% trans "more..." %}</a></p>
+                {% else %}
+                    {% groupurl forum_list company as new_forum_url %}
+                    <p>{% blocktrans %}No group exists. <a href="{{ new_forum_url }}">Create a group now!</a>{% endblocktrans %}</p>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block extra_body %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#edit-company').hide();
+            $('#edit-company-toggle').click(function() {
+                $('#edit-company').toggle();
+                $('#edit-company').autoscroll();
+                return false;
+            });
+            if ($('#edit-company .error').length) {
+                $('#edit-company').show();
+                $('#edit-company .error').autoscroll();
+            }
+        });
+    </script>
+    
+{% endblock %}
